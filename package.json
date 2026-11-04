@@ -4,10 +4,13 @@
   "private": true,
   "type": "module",
   "engines": {
-    "node": ">=22"
+    "node": ">=22.13.0"
   },
   "scripts": {
     "test": "node --test",
-    "demo": "node scripts/demo.mjs"
+    "demo": "node scripts/demo.mjs",
+    "case": "node scripts/case.mjs",
+    "rehearsal": "node --test test/rehearsal.test.mjs",
+    "bookings:preview": "node scripts/bookings.mjs preview fixtures/bookings-valid.csv"
   }
 }

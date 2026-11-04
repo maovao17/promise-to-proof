@@ -25,9 +25,13 @@ export function applyEvent(current, event) {
       role('coordinator'); text(event.scope);
       requireThat(Number.isInteger(event.expectedVersion) && event.expectedVersion === c.version, 'Scope edit conflict');
       requireThat(Array.isArray(event.criteria) && event.criteria.length > 0 && event.criteria.every(x => typeof x === 'string' && x.trim()), 'Acceptance criteria required');
-      c.version++; c.scope=event.scope; c.criteria=[...event.criteria]; c.status='proposed';
+      c.blocker=null; c.version++; c.scope=event.scope; c.criteria=[...event.criteria]; c.status='proposed';
       c.commit=null; c.approval=null; c.evidence=null; c.draft=null; c.release=null; c.notification=null; c.failures=0;
       break;
+    case 'clarify':
+    case 'defer':
+      role('coordinator'); requireThat(event.version === c.version, 'Stale scope version'); text(event.reason);
+      c.status=event.type==='clarify'?'waiting':'deferred'; c.blocker=event.reason; c.approval=null; c.evidence=null; c.draft=null; c.commit=null; c.release=null; c.notification=null; break;
     case 'approve':
       role('founder'); fresh(); state('proposed');
       c.approval={version:c.version,eventId:event.id}; c.status='approved'; break;
