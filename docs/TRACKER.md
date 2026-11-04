@@ -1,5 +1,5 @@
 # Build tracker
-Updated November 4, 2026. This file is the initial source of truth; link implementation PRs and evidence as work completes.
+Updated November 5, 2026. This file is the initial source of truth; link implementation PRs and evidence as work completes.
 
 | ID | Task | Owner | Target IST | Status | Done means |
 | --- | --- | --- | --- | --- | --- |
@@ -9,8 +9,8 @@ Updated November 4, 2026. This file is the initial source of truth; link impleme
 | P04 | Live Switch documentation handoff smoke test | Joint | Nov 4 | Done | Human request → coordinator → builder → reviewer → room report; docs only |
 | P05a | Durable local case storage (P2P-STORE-001 v1) | p2p-builder | Nov 5 | Done | Restart, duplicate/conflict, failed-event and concurrent-write tests on the exact commit |
 | P05b | Trusted identity mapping | Assistant | Nov 5 | Todo | Authenticated Switch roles; customer text cannot supply actor roles |
-| P06 | Demo booking importer | Assistant | Nov 5 | Todo | CSV preview, validation, duplicate handling |
-| P07 | Connect role tools to workflow core | Assistant | Nov 5 | Todo | Case transitions driven from room |
+| P06 | Demo booking importer | Assistant | Nov 5 | Implemented; review pending | CSV preview, validation, duplicate handling |
+| P07 | Connect role tools to workflow core | Assistant | Nov 5 | Local commands implemented; live run pending | Case transitions driven from room |
 | P08 | Independent review and commit-bound evidence | Assistant | Nov 6 | Todo | Failed check blocks completion |
 | P09 | End-to-end rehearsal and comparison | Joint | Nov 6 | Todo | Reproducible live run; recorded measures |
 | P10 | Record and edit short demo | Maithalee + Assistant | Nov 7 | Todo | Actual flow, scope change, evidence |
@@ -33,3 +33,6 @@ Use Todo / In progress / Blocked / Done. A plan or mock is not a completed integ
 `npm test`: 8 passed, 0 failed. `npm run demo`: offline scope-change scenario passed. Live product integration and CI execution are not yet verified.
 P2P-HANDOFF-001 v1: reviewer checked the exact documentation commit, single changed file, and clean diff.
 P2P-STORE-001 v1: on Node v25.9.0, independent reviewer ran `node --test test/store.test.mjs` (5 passed) and `npm test` (13 passed), plus a separate synthetic fresh-process/replay/conflict/rejection check. The interruption test used a pre-commit SIGKILL; power-loss recovery and declared Node 22.13 compatibility were not separately tested. Event replay identity follows JSON key order.
+
+## November 5 runtime verification
+Role prompt source hashes and fresh saved case briefs implemented; explicit task contracts replace polling loops. CSV preview/save and offline full-case rehearsal implemented. `npm test`: 20 passed on Node 24.22.1. `npm run rehearsal` and `npm run bookings:preview` passed. New runtime independent review and live product run pending. Local role selection is policy enforcement, not authenticated room identity. No real external release/send occurred.

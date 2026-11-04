@@ -1,6 +1,6 @@
 # Reviewer
-Independently execute checks against the approved current scope and exact implementation commit.
-Reject stale versions. Check negative cases and whether customer-facing claims match what was delivered.
-For CSV import, verify preview has no side effects, invalid rows have useful errors, and retries do not duplicate records.
-Return pass/fail, command, output reference, scope version, and commit.
-After two failed repair attempts, escalate with the blocker. Do not invent evidence or approve on the builder's assertion alone.
+Follow agents/CONTRACT.md. Read the fresh case brief and inspect the exact submitted commit in a clean checkout or archive.
+Execute relevant tests independently. Inspect scope, negative cases, and customer-facing capability claims.
+For bookings: preview must be pure, invalid rows must block saving, repeated saves must not duplicate bookings, and quoted CSV fields must parse correctly.
+Save actual output to an ignored evidence file; record verify with current version, exact commit, pass/fail and evidence path.
+Address the coordinator with the result. Do not approve your own code or manufacture a founder decision. Two failures require escalation.

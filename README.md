@@ -1,40 +1,42 @@
 # Promise to Proof
-A Switch workflow for small software teams: turn a customer blocker into an agreed scope, verified delivery, and an accurate customer update.
+A Switch workflow for small software teams: carry a customer request through an explicit scope decision, implementation, independent review, and an accurate customer update.
 
-**Status — November 4, 2026:** research, workflow specification, agent instructions, and an offline tested workflow core. Live Switch connection, demo product, delivery integration, and recorded demo are **not yet implemented**. Do not present the offline demo as a live agent run.
+## Status — November 5, 2026
+- Live coordinator → builder → reviewer documentation handoff completed.
+- Durable SQLite case store independently reviewed.
+- Role prompt loading, case commands, CSV booking importer, and offline integration rehearsal implemented.
+- Full live product rehearsal and independent review of the new runtime remain pending.
+- No real release, customer email, or production identity integration exists.
 
-## Run the starter
-Requires Node.js 22.13 or newer. No dependencies or API keys are needed for the offline core and local store.
+## Run
+Node 22.13+; no package installation or API key needed for local tests. New runtime tested on Node 24.
 ```sh
 npm test
-npm run demo
+npm run rehearsal
+npm run bookings:preview
 ```
-The demo shows approval invalidation after scope changes. It does not call AI models, send messages, or deploy code.
+The rehearsal is an offline test with synthetic decisions and simulated delivery. It is not a live Switch conversation.
 
-## Local case storage — P2P-STORE-001 v1
-`CaseStore` in `src/store.mjs` keeps full synthetic event payloads and resulting case state in a SQLite file under `runtime/`. Create a store with `new CaseStore('runtime/cases.sqlite')`, then use `create(id, request)`, `append(id, event)`, `get(id)`, `events(id)`, and `close()`. Reopen the same path after a restart to read the case. The file is local and ignored by Git; this layer does not connect room identities or perform external actions.
+## Agent workflow
+1. Founder posts a request in the Switch-connected room.
+2. Coordinator investigates, proposes scope and records the human's decision.
+3. Builder receives a versioned assignment and produces an implementation commit.
+4. Reviewer checks that exact commit and records results.
+5. Coordinator drafts the customer update.
+6. Scope changes invalidate old approvals, evidence and drafts.
+7. Release, notification and customer confirmation are separate records.
 
-Run `node --test test/store.test.mjs` for storage checks, or `npm test` for the full suite. Node's built-in SQLite module remains experimental on the supported Node 22 line.
+Each agent runs the role brief command to load its prompt files, source hashes and current case. Agents use their existing tools to invoke the local runtime; it is not a continuously running room-event adapter. Local role selection is not authentication.
 
-## The workflow
-1. Paste a customer request in a Switch-connected Mattermost room.
-2. Coordinator gathers evidence; builder checks existing capabilities and technical options.
-3. Founder chooses build, workaround, clarify, or defer.
-4. Builder implements the approved scope; reviewer verifies acceptance criteria.
-5. Scope changes invalidate old approvals, evidence, and reply drafts.
-6. Founder reviews release and the exact customer update.
-7. Track release, notification, and customer confirmation separately.
+## Demo product
+A small CSV booking importer with a pure preview, explicit save, row validation and duplicate protection. Read [runtime instructions](docs/RUNTIME.md) for the schema, commands and live rehearsal.
 
-## Why Switch
-The intended live workflow receives human decisions and agent handoffs through the Switch room. The room contains shared context and case links. Agents must not silently bypass it with a separate chat interface. The offline state reducer is only a testable component of that workflow.
-
-## Start here
+## Documents
 - [Master brief and research](docs/MASTER_BRIEF.md)
+- [Runtime and rehearsal](docs/RUNTIME.md)
 - [Build tracker](docs/TRACKER.md)
-- [Workflow and architecture](docs/WORKFLOW.md)
+- [Workflow](docs/WORKFLOW.md)
 - [Demo script](docs/DEMO.md)
 - [Submission checklist](docs/SUBMISSION.md)
-- [Switch setup runbook](docs/SWITCH_SETUP.md)
-- [Decisions](docs/DECISIONS.md)
 
-Working title; no uniqueness or commercial-demand claim. All demo customer data must be synthetic.
+Switch is the live collaboration surface for human decisions and agent handoffs. The deterministic core and local tests are components of the workflow, not substitutes for its live demonstration.
