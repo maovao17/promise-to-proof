@@ -12,13 +12,17 @@ export class CaseStore {
   #insertEvent;
   #selectEvents;
   #beforeCommit;
+  #create;
+  #reduce;
 
-  constructor(filePath, { beforeCommit } = {}) {
+  constructor(filePath, { beforeCommit, create = createCase, reduce = applyEvent } = {}) {
     if (typeof filePath !== 'string' || !filePath.trim()) throw new Error('Database path required');
     if (beforeCommit !== undefined && typeof beforeCommit !== 'function') throw new TypeError('beforeCommit must be a function');
     mkdirSync(dirname(filePath), { recursive: true });
     this.#db = new DatabaseSync(filePath);
     this.#beforeCommit = beforeCommit;
+    this.#create = create;
+    this.#reduce = reduce;
     this.#db.exec(`
       PRAGMA busy_timeout = 5000;
       PRAGMA synchronous = FULL;
@@ -57,7 +61,7 @@ export class CaseStore {
   }
 
   create(id, request) {
-    const state = createCase(id, request);
+    const state = this.#create(id, request);
     return this.#transaction(() => {
       this.#insertCase.run(id, request, JSON.stringify(state));
       return state;
@@ -81,7 +85,7 @@ export class CaseStore {
     return this.#transaction(() => {
       const current = this.get(id);
       if (!current) throw new Error('Case not found');
-      const next = applyEvent(current, storedEvent);
+      const next = this.#reduce(current, storedEvent);
       if (next.events.length === current.events.length) return next;
       this.#insertEvent.run(id, next.events.length, storedEvent.id, eventJson);
       this.#updateCase.run(JSON.stringify(next), id);
