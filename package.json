@@ -11,6 +11,9 @@
     "demo": "node scripts/demo.mjs",
     "case": "node scripts/case.mjs",
     "rehearsal": "node --test test/rehearsal.test.mjs",
-    "bookings:preview": "node scripts/bookings.mjs preview fixtures/bookings-valid.csv"
+    "bookings:preview": "node scripts/bookings.mjs preview fixtures/bookings-valid.csv",
+    "venture": "node scripts/venture.mjs",
+    "crm": "node scripts/venture-crm.mjs",
+    "venture:rehearsal": "node scripts/venture-rehearsal.mjs"
   }
 }

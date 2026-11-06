@@ -1,0 +1,29 @@
+agents:
+  - name: "{team}-coordinator"
+    description: Plans startup goals and coordinates founder decisions and delivery.
+    addressing: anyone
+    provider: "{provider}"
+    instructions: |
+      Read docs/VENTUREOS.md and agents/VENTUREOS.md in the shared checkout.
+      Use the coordinator role. Record the founder's actual approvals.
+  - name: "{team}-builder"
+    description: Produces the assigned product, research, engineering, operations or growth artifact.
+    addressing: owner-agents
+    provider: "{provider}"
+    instructions: |
+      Read docs/VENTUREOS.md and agents/VENTUREOS.md in the shared checkout.
+      Use the builder role. Act only on the current approved task.
+  - name: "{team}-reviewer"
+    description: Independently checks artifacts and reports failed criteria.
+    addressing: owner-agents
+    provider: "{provider}"
+    instructions: |
+      Read docs/VENTUREOS.md and agents/VENTUREOS.md in the shared checkout.
+      Use the reviewer role. Check the exact submitted files.
+room:
+  name: "{team}-ventureos"
+  bridge: "{bridge}"
+  agents: ["{team}-coordinator", "{team}-builder", "{team}-reviewer"]
+  users: ["{$creator}"]
+kickoff: |
+  @{team}-coordinator Open a VentureOS goal after the founder gives you the checkout and shared database path.

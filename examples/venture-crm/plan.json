@@ -1,0 +1,125 @@
+{
+  "id": "plan-1",
+  "type": "plan",
+  "version": 0,
+  "brief": {
+    "title": "Customer Desk for a small service business",
+    "audience": "Solo service founders",
+    "scope": "Local CRM and first launch experiment",
+    "constraints": [
+      "Synthetic data",
+      "Local use"
+    ],
+    "assumptions": [
+      "A short follow-up workflow is valuable"
+    ],
+    "successCriteria": [
+      "Create, search and update a contact",
+      "Review all five deliverables"
+    ],
+    "artifacts": [
+      "examples/venture-crm/delivery/PRODUCT.md",
+      "examples/venture-crm/delivery/RESEARCH.md",
+      "examples/venture-crm/delivery/OPERATIONS.md",
+      "examples/venture-crm/index.html",
+      "examples/venture-crm/customers.mjs",
+      "examples/venture-crm/delivery/LAUNCH.md"
+    ],
+    "risks": [
+      "Browser storage is device-local"
+    ],
+    "decisionsNeeded": [
+      "Approve plan",
+      "Accept verified delivery"
+    ]
+  },
+  "tasks": [
+    {
+      "id": "product",
+      "capability": "product",
+      "title": "Define customer desk scope",
+      "dependencies": [],
+      "criteria": [
+        "Audience, scope and acceptance criteria are explicit"
+      ],
+      "expectedArtifacts": [
+        "examples/venture-crm/delivery/PRODUCT.md"
+      ],
+      "requiredEvidence": [
+        "Inspect approved brief"
+      ]
+    },
+    {
+      "id": "research",
+      "capability": "research",
+      "title": "Check alternatives and assumptions",
+      "dependencies": [],
+      "criteria": [
+        "Source links are real and assumptions are marked"
+      ],
+      "expectedArtifacts": [
+        "examples/venture-crm/delivery/RESEARCH.md"
+      ],
+      "requiredEvidence": [
+        "Read primary source and compare claims"
+      ]
+    },
+    {
+      "id": "ops",
+      "capability": "operations",
+      "title": "Document customer follow-up",
+      "dependencies": [
+        "product"
+      ],
+      "criteria": [
+        "Steps and owner are actionable"
+      ],
+      "expectedArtifacts": [
+        "examples/venture-crm/delivery/OPERATIONS.md"
+      ],
+      "requiredEvidence": [
+        "Walk through each step"
+      ]
+    },
+    {
+      "id": "crm",
+      "capability": "engineering",
+      "title": "Build customer desk",
+      "dependencies": [
+        "product",
+        "research"
+      ],
+      "criteria": [
+        "Create and list contacts",
+        "Search by name or email",
+        "Update status",
+        "Validate input and prevent duplicate email"
+      ],
+      "expectedArtifacts": [
+        "examples/venture-crm/index.html",
+        "examples/venture-crm/customers.mjs"
+      ],
+      "requiredEvidence": [
+        "Run CRM tests and inspect browser entry point"
+      ]
+    },
+    {
+      "id": "launch",
+      "capability": "growth",
+      "title": "Draft first launch experiment",
+      "dependencies": [
+        "crm",
+        "ops"
+      ],
+      "criteria": [
+        "Audience, outreach draft and metrics match scope"
+      ],
+      "expectedArtifacts": [
+        "examples/venture-crm/delivery/LAUNCH.md"
+      ],
+      "requiredEvidence": [
+        "Compare launch plan with approved audience"
+      ]
+    }
+  ]
+}

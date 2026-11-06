@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VentureOS Customer Desk</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f5f7fa;color:#152239;font:16px system-ui,sans-serif}main{max-width:960px;margin:auto;padding:32px 20px}header{background:#142a45;color:white;padding:32px;border-radius:14px}h1{margin:8px 0}h2{font-size:20px}section{background:white;border:1px solid #dce3eb;border-radius:12px;margin-top:20px;padding:20px}form{display:flex;flex-wrap:wrap;align-items:end;gap:12px}label{display:grid;gap:6px;font-weight:600}input,select,button{font:inherit;padding:9px;border:1px solid #94a4b8;border-radius:7px}button{background:#154c66;color:white;cursor:pointer}table{width:100%;border-collapse:collapse;margin-top:15px}th,td{text-align:left;border-bottom:1px solid #e4eaf1;padding:10px;overflow-wrap:anywhere}#message{min-height:1.5em}p{margin-bottom:0}.scroll{overflow:auto}
+</style>
+<main>
+<header><small>VENTUREOS / SERVICE BUSINESS DEMO</small><h1>Customer Desk</h1><p>Keep customer details and follow-up status in one place.</p></header>
+<section><h2>Add customer</h2><form id="add"><label>Name<input name="name" required maxlength="80"></label><label>Email<input name="email" type="email" required></label><button>Add customer</button></form><p id="message" role="status"></p></section>
+<section><h2>Customers</h2><label>Search by name or email<input id="search" type="search"></label><div class="scroll"><table><thead><tr><th>Name</th><th>Email</th><th>Status</th></tr></thead><tbody id="rows"></tbody></table></div><p id="count" aria-live="polite"></p></section>
+</main>
+<script type="module">
+import { addCustomer, searchCustomers, updateStatus, statuses } from './customers.mjs';
+const key = 'ventureos-customer-desk-v1';
+const form = document.querySelector('#add');
+const search = document.querySelector('#search');
+const rows = document.querySelector('#rows');
+const message = document.querySelector('#message');
+let customers = [];
+try {
+  customers = JSON.parse(localStorage.getItem(key) || '[]');
+  if (!Array.isArray(customers)) throw new Error('Invalid saved records');
+} catch {
+  customers = [];
+  message.textContent = 'Saved records could not be read.';
+}
+function save(next) {
+  localStorage.setItem(key, JSON.stringify(next));
+  customers = next;
+  render();
+}
+function render() {
+  const matches = searchCustomers(customers, search.value);
+  rows.replaceChildren();
+  for (const customer of matches) {
+    const row = rows.insertRow();
+    row.insertCell().textContent = customer.name;
+    row.insertCell().textContent = customer.email;
+    const select = document.createElement('select');
+    select.setAttribute('aria-label', 'Status for ' + customer.name);
+    for (const status of statuses) select.add(new Option(status, status));
+    select.value = customer.status;
+    select.addEventListener('change', () => {
+      try { save(updateStatus(customers, customer.id, select.value)); message.textContent = 'Status saved.'; }
+      catch (error) { select.value = customer.status; message.textContent = error.message; }
+    });
+    row.insertCell().append(select);
+  }
+  document.querySelector('#count').textContent = matches.length + ' of ' + customers.length + ' customers';
+}
+form.addEventListener('submit', event => {
+  event.preventDefault();
+  try {
+    save(addCustomer(customers, Object.fromEntries(new FormData(form)), crypto.randomUUID()));
+    form.reset();
+    message.textContent = 'Customer added.';
+  } catch (error) { message.textContent = error.message; }
+});
+search.addEventListener('input', render);
+render();
+</script>
+</html>

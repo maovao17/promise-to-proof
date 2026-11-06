@@ -1,3 +1,11 @@
+# VentureOS
+
+A founder and three Switch agents turn a business goal into approved tasks, reviewed artifacts and a Proof Pack. VentureOS extends the Promise to Proof repository.
+
+Run `npm test`, `npm run venture:rehearsal`, and `npm run crm` with Node 22.13 or later. Follow the [VentureOS setup and demo guide](docs/VENTUREOS.md) for the existing Switch room and the reusable template.
+
+---
+
 # Promise to Proof
 A Switch workflow for small software teams: carry a customer request through an explicit scope decision, implementation, independent review, and an accurate customer update.
 
